@@ -2,13 +2,13 @@ import json
 import pytz
 import redis
 
+import django
 from django.contrib import messages
 from django.conf import settings
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponse
 from django.shortcuts import redirect
-from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _, ugettext as __
 from django.views import generic
 
@@ -17,6 +17,11 @@ from rq.exceptions import NoSuchJobError
 from rq.job import Job
 
 from .forms import QueueForm, JobForm
+
+if django.VERSION[1] < 4:
+    from .compat import timezone
+else:
+    from django.utils import timezone
 
 
 utc = pytz.timezone('UTC')
